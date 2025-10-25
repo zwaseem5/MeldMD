@@ -1,4 +1,17 @@
 {
+  "name": "meldmd-site",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18.18 <=22.x"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4173",
+    "lint": "eslint ."
+  },
   "dependencies": {
     "@tanstack/react-query": "^5.87.4",
     "framer-motion": "12.23.12",
@@ -25,15 +38,5 @@
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.18.2",
     "vite": "^6.0.5"
-  },
-  "name": "meldmd-site",
-  "private": true,
-  "scripts": {
-    "build": "tsc -b \u0026\u0026 vite build",
-    "dev": "vite",
-    "lint": "eslint .",
-    "preview": "vite preview"
-  },
-  "type": "module",
-  "version": "0.0.0"
+  }
 }
