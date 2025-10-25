@@ -1,0 +1,415 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+}
+
+@layer utilities {
+  .animate-sway {
+    animation: sway 3s ease-in-out infinite;
+  }
+  
+  .animate-slide-in-left {
+    animation: slideInLeft 0.5s ease-out;
+  }
+  
+  .animate-float {
+    animation: float 2s ease-in-out infinite;
+  }
+  
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  .shake-animation {
+    animation: subtleShake 2s ease-in-out infinite;
+  }
+}
+
+@keyframes sway {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes glow {
+  from { box-shadow: 0 0 5px rgba(59, 130, 246, 0.5); }
+  to { box-shadow: 0 0 20px rgba(59, 130, 246, 0.8); }
+}
+
+@keyframes subtleShake {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  10% { transform: translateX(-1px) translateY(-1px); }
+  20% { transform: translateX(1px) translateY(1px); }
+  30% { transform: translateX(-1px) translateY(1px); }
+  40% { transform: translateX(1px) translateY(-1px); }
+  50% { transform: translateX(-1px) translateY(-1px); }
+  60% { transform: translateX(1px) translateY(1px); }
+  70% { transform: translateX(-1px) translateY(1px); }
+  80% { transform: translateX(1px) translateY(-1px); }
+  90% { transform: translateX(-1px) translateY(-1px); }
+}
+
+@keyframes gridFloat {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  25% { transform: translateY(-5px) translateX(2px); }
+  50% { transform: translateY(0px) translateX(-2px); }
+  75% { transform: translateY(5px) translateX(2px); }
+}
+
+/* Game-specific styles */
+.select-none {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Prevent text selection in game */
+.game-world * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Custom scrollbar for game modals */
+.game-modal::-webkit-scrollbar {
+  width: 8px;
+}
+
+.game-modal::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.game-modal::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.game-modal::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Smooth transitions for game elements */
+.game-element {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover effects for interactive elements */
+.interactive-hover:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+/* Pulse animation for urgent elements */
+.urgent-pulse {
+  animation: urgentPulse 1s ease-in-out infinite;
+}
+
+@keyframes urgentPulse {
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+/* Energy bar animations */
+.energy-bar {
+  transition: width 0.5s ease-in-out;
+}
+
+/* Character movement smoothing */
+.character-smooth {
+  transition: transform 0.2s ease-out;
+}
+
+/* Modal backdrop blur */
+.modal-backdrop {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Game UI glassmorphism */
+.glass-ui {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Notification animations */
+.notification-enter {
+  animation: notificationSlide 0.3s ease-out;
+}
+
+@keyframes notificationSlide {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Game world grid overlay */
+.game-grid {
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Interactive area highlights */
+.area-highlight {
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+  border: 3px solid rgba(255, 215, 0, 0.8);
+}
+
+/* Patient urgency indicators */
+.urgency-high {
+  animation: urgentBlink 0.5s ease-in-out infinite;
+}
+
+.urgency-medium {
+  animation: mediumPulse 1s ease-in-out infinite;
+}
+
+.urgency-low {
+  animation: lowGlow 2s ease-in-out infinite;
+}
+
+@keyframes urgentBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes mediumPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes lowGlow {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.2); }
+}
+
+/* Game HUD styling */
+.game-hud {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.95), rgba(147, 51, 234, 0.95));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Progress bars */
+.progress-bar {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.3s ease-in-out;
+}
+
+/* Button hover effects */
+.game-button {
+  transition: all 0.2s ease-in-out;
+  transform-origin: center;
+}
+
+.game-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.game-button:active {
+  transform: scale(0.98);
+}
+
+/* Modal animations */
+.modal-enter {
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Character customization preview */
+.character-preview {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Game world paths */
+.hospital-path {
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(156, 163, 175, 0.3) 20%, 
+    rgba(156, 163, 175, 0.3) 80%, 
+    transparent 100%
+  );
+}
+
+/* Equipment indicators */
+.equipment-glow {
+  box-shadow: 0 0 15px rgba(34, 197, 94, 0.5);
+  border: 2px solid rgba(34, 197, 94, 0.7);
+}
+
+/* Social interaction bubbles */
+.chat-bubble {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Game time display */
+.game-time {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Achievement notifications */
+.achievement-notification {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: white;
+  font-weight: bold;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 25px rgba(251, 191, 36, 0.3);
+}
+
+/* Loading states */
+.loading-shimmer {
+  background: linear-gradient(90deg, 
+    rgba(255, 255, 255, 0.1) 0%, 
+    rgba(255, 255, 255, 0.3) 50%, 
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Enhanced page transition effects */
+.page-transition-enter {
+  animation: pageEnter 0.5s ease-out;
+}
+
+.page-transition-exit {
+  animation: pageExit 0.3s ease-in;
+}
+
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes pageExit {
+  from {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.05);
+    filter: blur(10px);
+  }
+}
+
+/* Responsive game elements */
+@media (max-width: 768px) {
+  .game-hud {
+    padding: 12px;
+  }
+  
+  .game-area {
+    transform: scale(0.8);
+  }
+  
+  .character-preview {
+    padding: 15px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .game-element {
+    border: 2px solid currentColor;
+  }
+  
+  .glass-ui {
+    background: rgba(255, 255, 255, 0.9);
+    color: black;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .animate-bounce,
+  .animate-pulse,
+  .animate-sway,
+  .animate-float,
+  .shake-animation {
+    animation: none;
+  }
+  
+  .game-element {
+    transition: none;
+  }
+}

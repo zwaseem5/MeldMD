@@ -1,0 +1,22 @@
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://meldmd.com/sitemap.xml
+
+# Disallow admin areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /static/
+
+# Allow important pages
+Allow: /
+Allow: /about
+Allow: /contact
+Allow: /meld-health
+Allow: /meld-creative
+Allow: /providers
+Allow: /legal/privacy
+Allow: /legal/terms
