@@ -1,82 +1,47 @@
+// vite.config.ts
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
-import { resolve } from 'node:path'
-import AutoImport from 'unplugin-auto-import/vite'
+import react from '@vitejs/plugin-react'
 
+// Use BASE_PATH from env if provided (Vercel/CI), else default to '/'
 const base = process.env.BASE_PATH || '/'
-const isPreview = process.env.IS_PREVIEW  ? true : false;
-// https://vite.dev/config/
+// Optional preview flag you were using
+const isPreview = !!process.env.IS_PREVIEW
+
+// Resolve src path without importing node:path (avoids TS complaints in CI)
+const SRC_ALIAS = new URL('./src', import.meta.url).pathname
+
 export default defineConfig({
+  // Expose globals used in your code
   define: {
-   __BASE_PATH__: JSON.stringify(base),
-   __IS_PREVIEW__: JSON.stringify(isPreview)
+    __BASE_PATH__: JSON.stringify(base),
+    __IS_PREVIEW__: JSON.stringify(isPreview),
   },
-  plugins: [react(),
-    AutoImport({
-      imports: [
-        {
-          'react': [
-            'React',
-            'useState',
-            'useEffect',
-            'useContext',
-            'useReducer',
-            'useCallback',
-            'useMemo',
-            'useRef',
-            'useImperativeHandle',
-            'useLayoutEffect',
-            'useDebugValue',
-            'useDeferredValue',
-            'useId',
-            'useInsertionEffect',
-            'useSyncExternalStore',
-            'useTransition',
-            'startTransition',
-            'lazy',
-            'memo',
-            'forwardRef',
-            'createContext',
-            'createElement',
-            'cloneElement',
-            'isValidElement'
-          ]
-        },
-        {
-          'react-router-dom': [
-            'useNavigate',
-            'useLocation',
-            'useParams',
-            'useSearchParams',
-            'Link',
-            'NavLink',
-            'Navigate',
-            'Outlet'
-          ]
-        },
-        // React i18n
-        {
-          'react-i18next': [
-            'useTranslation',
-            'Trans'
-          ]
-        }
-      ],
-      dts: true,
-    }),
+
+  plugins: [
+    // Use the standard React plugin (not the SWC variant)
+    react(),
+    // NOTE:
+    // If you need unplugin-auto-import, add it back here AND ensure
+    // `unplugin-auto-import` is in devDependencies. Otherwise, leave it out.
   ],
+
+  // Set the base path for assets/router
   base,
+
   build: {
     sourcemap: true,
-    outDir: 'out',
+    // Vercel expects "dist" by default; keep it consistent with vercel.json or presets
+    outDir: 'dist',
   },
+
   resolve: {
     alias: {
-      '@': resolve(__dirname, './src')
-    }
+      '@': SRC_ALIAS,
+    },
   },
+
   server: {
     port: 3000,
     host: '0.0.0.0',
-  }
+  },
 })
