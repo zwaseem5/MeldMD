@@ -1,1 +1,82 @@
+import React from "react";
+import {
+  motion,
+  useAnimationFrame,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  useVelocity,
+  useScroll,
+} from "framer-motion";
+
+/**
+ * Wrap a value into [min, max)
+ */
+function wrap(min: number, max: number, v: number) {
+  const range = max - min;
+  return ((((v - min) % range) + range) % range) + min;
+}
+
+type Props = {
+  text: string;
+  className?: string;
+  /** base speed in percent per second (negative = right→left) */
+  baseVelocity?: number;
+  /** how many times the text should repeat in the strip */
+  repeat?: number;
+};
+
+const ScrollVelocityText: React.FC<Props> = ({
+  text,
+  className,
+  baseVelocity = -20, // tweak to taste
+  repeat = 4,
+}) => {
+  // 1) track scroll velocity
+  const { scrollY } = useScroll();
+  const rawVelocity = useVelocity(scrollY);
+  const smoothVelocity = useSpring(rawVelocity, { stiffness: 400, damping: 50, mass: 0.8 });
+  const velocityFactor = useTransform(smoothVelocity, v => Math.max(-5, Math.min(5, v / 1000)));
+
+  // 2) animate an x "position" we’ll wrap so it loops
+  const baseX = useMotionValue(0);
+
+  // 3) animation frame: move based on time + scroll velocity
+  useAnimationFrame((_, delta) => {
+    // delta is in ms → convert to seconds
+    const deltaSeconds = delta / 1000;
+    // speed influenced by scroll (scrolling down speeds up left movement, up reverses)
+    const moveBy = (baseVelocity + baseVelocity * velocityFactor.get()) * deltaSeconds;
+    baseX.set(baseX.get() + moveBy);
+  });
+
+  // 4) convert x into a wrapped percentage to create an infinite loop
+  const x = useTransform(baseX, v => `${wrap(-50, 0, v)}%`);
+
+  // Reduced motion: keep static if user prefers
+  const prefersReducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const items = Array.from({ length: repeat }, (_, i) => (
+    <span key={i} className="mx-6">
+      {text}
+    </span>
+  ));
+
+  return (
+    <div className="relative overflow-hidden select-none">
+      <motion.div
+        aria-hidden
+        style={{ x: prefersReducedMotion ? "0%" : x }}
+        className={`whitespace-nowrap will-change-transform ${className ?? ""}`}
+      >
+        {items}
+      </motion.div>
+    </div>
+  );
+};
+
+export default ScrollVelocityText;
 
