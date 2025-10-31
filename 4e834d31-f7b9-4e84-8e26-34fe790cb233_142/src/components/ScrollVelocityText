@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   motion,
   useAnimationFrame,
@@ -9,64 +9,89 @@ import {
   useScroll,
 } from "framer-motion";
 
-/**
- * Wrap a value into [min, max)
- */
+/** Wrap a value into [min, max) to create an infinite loop. */
 function wrap(min: number, max: number, v: number) {
   const range = max - min;
   return ((((v - min) % range) + range) % range) + min;
 }
 
-type Props = {
+export type ScrollVelocityTextProps = {
+  /** The text content that repeats across the marquee. */
   text: string;
+  /** Tailwind/utility classes for styling the strip. */
   className?: string;
-  /** base speed in percent per second (negative = right→left) */
+  /** Base speed in percent/second. Negative = left, positive = right. */
   baseVelocity?: number;
-  /** how many times the text should repeat in the strip */
+  /** How many copies of the text to render in the strip. */
   repeat?: number;
+  /** Gap (px) between repeated items. */
+  gap?: number;
+  /** Optional separator to render between items (e.g., "•"). */
+  separator?: string | React.ReactNode;
+  /** Pause animation on hover. */
+  pauseOnHover?: boolean;
 };
 
-const ScrollVelocityText: React.FC<Props> = ({
+const ScrollVelocityText: React.FC<ScrollVelocityTextProps> = ({
   text,
   className,
-  baseVelocity = -20, // tweak to taste
-  repeat = 4,
+  baseVelocity = -18,
+  repeat = 6,
+  gap = 24,
+  separator,
+  pauseOnHover = true,
 }) => {
-  // 1) track scroll velocity
+  // Track scroll velocity
   const { scrollY } = useScroll();
   const rawVelocity = useVelocity(scrollY);
   const smoothVelocity = useSpring(rawVelocity, { stiffness: 400, damping: 50, mass: 0.8 });
-  const velocityFactor = useTransform(smoothVelocity, v => Math.max(-5, Math.min(5, v / 1000)));
+  const velocityFactor = useTransform(smoothVelocity, (v) => {
+    // Normalize a bit so small scrolls still affect speed, but clamp extremes
+    const normalized = v / 1000; // px/ms -> ~screens/sec
+    return Math.max(-5, Math.min(5, normalized));
+  });
 
-  // 2) animate an x "position" we’ll wrap so it loops
+  // Animated base position (in "percent of width")
   const baseX = useMotionValue(0);
 
-  // 3) animation frame: move based on time + scroll velocity
+  // Reduced motion preference (SSR-safe check)
+  const prefersReducedMotion =
+    typeof window !== "undefined" &&
+    "matchMedia" in window &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Hover pause
+  const [hovered, setHovered] = useState(false);
+
+  // Advance each frame according to base + scroll velocity
   useAnimationFrame((_, delta) => {
-    // delta is in ms → convert to seconds
-    const deltaSeconds = delta / 1000;
-    // speed influenced by scroll (scrolling down speeds up left movement, up reverses)
-    const moveBy = (baseVelocity + baseVelocity * velocityFactor.get()) * deltaSeconds;
+    if (prefersReducedMotion) return;
+    if (pauseOnHover && hovered) return;
+
+    const dt = delta / 1000; // ms -> s
+    const vf = velocityFactor.get();
+    // Speed increases with scroll velocity; scrolling up inverts direction
+    const moveBy = (baseVelocity + baseVelocity * vf) * dt;
     baseX.set(baseX.get() + moveBy);
   });
 
-  // 4) convert x into a wrapped percentage to create an infinite loop
-  const x = useTransform(baseX, v => `${wrap(-50, 0, v)}%`);
+  // Wrap the position so the strip loops seamlessly
+  const x = useTransform(baseX, (v) => `${wrap(-50, 0, v)}%`);
 
-  // Reduced motion: keep static if user prefers
-  const prefersReducedMotion =
-    typeof window !== "undefined" &&
-    window.matchMedia &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
+  // Build repeated items
   const items = Array.from({ length: repeat }, (_, i) => (
-    <span key={i} className="mx-6">
-      {text}
+    <span key={i} className="inline-flex items-center">
+      <span style={{ marginLeft: i === 0 ? 0 : gap }}>{text}</span>
+      {separator ? <span style={{ marginLeft: gap }}>{separator}</span> : null}
     </span>
   ));
 
   return (
-    <div className="relative overflow-hidden select-none">
+    <div
+      className="relative overflow-hidden select-none"
+      onMouseEnter={() => pauseOnHover && setHovered(true)}
+      onMouseLeave={() => pauseOnHover && setHovered(false)}
+    >
       <motion.div
         aria-hidden
         style={{ x: prefersReducedMotion ? "0%" : x }}
