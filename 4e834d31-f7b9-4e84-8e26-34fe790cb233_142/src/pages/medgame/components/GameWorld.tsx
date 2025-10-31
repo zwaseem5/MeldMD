@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import type { ComponentProps } from 'react';
 import { useUserData } from '../../../hooks/useUserData';
 import PlayerCharacter from './PlayerCharacter';
 import ShopInterface from './ShopInterface';
@@ -39,6 +40,17 @@ interface Patient {
   helped: boolean;
   urgency: 'low' | 'medium' | 'high';
 }
+
+/**
+ * Some components may declare a different `Patient` type for their callbacks.
+ * We'll accept whatever PatientDiagnosis passes and adapt it to the shape we use.
+ */
+type PatientDiagnosisProps = ComponentProps<typeof PatientDiagnosis>;
+type PDOnDiagnose = PatientDiagnosisProps['onDiagnose'];
+type PDPatient = PDOnDiagnose extends (patient: infer P, correct: boolean) => any ? P : never;
+
+// Minimal shape our game logic needs from a "patient" object
+type PatientLike = Pick<Patient, 'id' | 'difficulty'> & Partial<Patient>;
 
 // Simplified game areas - spread out city
 const gameAreas: GameArea[] = [
@@ -258,10 +270,11 @@ export default function GameWorld({ onModeChange }: GameWorldProps) {
     setShowPatientDiagnosis(true);
   };
 
-  const handlePatientDiagnosed = async (patient: Patient, correct: boolean) => {
+  // Accept a patient with the minimal fields we actually use
+  const handlePatientDiagnosed = async (patient: PatientLike, correct: boolean) => {
     if (correct) {
-      const reward = patient.difficulty * 50;
-      const coinReward = patient.difficulty * 30;
+      const reward = (patient.difficulty ?? 1) * 50;
+      const coinReward = (patient.difficulty ?? 1) * 30;
       
       await addExperience(reward);
       await addCoins(coinReward);
@@ -569,7 +582,7 @@ export default function GameWorld({ onModeChange }: GameWorldProps) {
       {/* Pharmacy Interface */}
       {showPharmacy && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full mx-4 border-4 border-purple-400 max-h=[80vh] overflow-y-auto">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full mx-4 border-4 border-purple-400 max-h-[80vh] overflow-y-auto">
             <div className="p-8">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-3xl font-bold text-gray-900">💊 Pharmacy</h2>
@@ -674,8 +687,20 @@ export default function GameWorld({ onModeChange }: GameWorldProps) {
         <PatientDiagnosis
           patient={currentPatient}
           onClose={() => setShowPatientDiagnosis(false)}
-          // Wrap async handler so the prop remains () => void
-          onDiagnose={(p, c) => { void handlePatientDiagnosed(p, c); }}
+          /**
+           * Adapt: accept whatever type PatientDiagnosis emits (`PDPatient`)
+           * and pass the minimal shape our handler needs.
+           */
+          onDiagnose={(p: PDPatient, c) => {
+            const adapted: PatientLike = {
+              id: (p as any).id,
+              difficulty: (p as any).difficulty ?? 1,
+              // carry over optional fields if they exist
+              helped: (p as any).helped,
+              urgency: (p as any).urgency
+            };
+            void handlePatientDiagnosed(adapted, c);
+          }}
         />
       )}
     </div>
