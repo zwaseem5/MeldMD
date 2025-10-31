@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useUserData } from '../../hooks/useUserData';
@@ -43,7 +42,8 @@ export default function ProfilePage() {
   }, [userProfile]);
 
   if (loading) {
-    return <LoadingAnimation />;
+    // Add onComplete to satisfy LoadingAnimationProps
+    return <LoadingAnimation onComplete={() => { /* no-op for profile loading */ }} />;
   }
 
   if (!user) {

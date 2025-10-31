@@ -1,4 +1,3 @@
-
 import { BrowserRouter } from 'react-router-dom';
 import { useRoutes } from 'react-router-dom';
 import { useState, useEffect } from 'react';
@@ -38,8 +37,11 @@ function App() {
     return <LoadingAnimation onComplete={handleLoadingComplete} />;
   }
 
+  // Vite provides this automatically based on your deploy base path
+  const BASE_PATH = import.meta.env.BASE_URL || '/';
+
   return (
-    <BrowserRouter basename={__BASE_PATH__}>
+    <BrowserRouter basename={BASE_PATH}>
       <AuthProvider>
         <div className="min-h-screen bg-white">
           <SiteHeader />

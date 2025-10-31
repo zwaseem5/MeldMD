@@ -1,10 +1,9 @@
-
 import { useState, useEffect, createContext, useContext } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import type { User, Session } from '@supabase/supabase-js';
+import type { User, Session, AuthChangeEvent } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseUrl = import.meta.env.VITE_PUBLIC_SUPABASE_URL as string;
+const supabaseAnonKey = import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY as string;
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
@@ -12,11 +11,16 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signUp: (email: string, password: string, userData?: any) => Promise<any>;
-  signIn: (email: string, password: string) => Promise<any>;
+  signUp: (
+    email: string,
+    password: string,
+    userData?: Record<string, unknown>
+  ) => Promise<{ data: unknown; error: unknown }>;
+  signIn: (email: string, password: string) => Promise<{ data: unknown; error: unknown }>;
   signOut: () => Promise<void>;
-  updateProfile: (data: any) => Promise<any>;
-  changePassword: (newPassword: string) => Promise<any>;
+  updateProfile: (data: Record<string, unknown>) => Promise<{ error: unknown | null }>;
+  changePassword: (newPassword: string) => Promise<{ error: unknown | null }>;
+  trackActivity: (activityType: string, data?: Record<string, unknown>) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -29,37 +33,39 @@ export function useAuth() {
   return context;
 }
 
-export function useAuthProvider() {
+export function useAuthProvider(): AuthContextType {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    (async () => {
+      const {
+        data: { session },
+      }: { data: { session: Session | null } } = await supabase.auth.getSession();
+
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
-    });
+    })();
 
     // Listen for auth changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
+    } = supabase.auth.onAuthStateChange(
+      async (event: AuthChangeEvent, session: Session | null) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+        setLoading(false);
 
-      // Create user profile if new user
-      if (event === 'SIGNED_UP' && session?.user) {
-        await createUserProfile(session.user);
+        // Create user profile whenever we have a valid user session
+        if (session?.user) {
+          await createUserProfile(session.user);
+          await trackActivity('auth_event', { event });
+        }
       }
-
-      // Track activity
-      if (session?.user) {
-        await trackActivity('auth_event', { event });
-      }
-    });
+    );
 
     return () => subscription.unsubscribe();
   }, []);
@@ -84,8 +90,8 @@ export function useAuthProvider() {
               full_name: user.user_metadata?.full_name || '',
               avatar_url: user.user_metadata?.avatar_url || '',
               created_at: new Date().toISOString(),
-              updated_at: new Date().toISOString()
-            }
+              updated_at: new Date().toISOString(),
+            },
           ]);
 
         if (profileError) throw profileError;
@@ -117,8 +123,8 @@ export function useAuthProvider() {
               inventory: [],
               research_projects: [],
               created_at: new Date().toISOString(),
-              updated_at: new Date().toISOString()
-            }
+              updated_at: new Date().toISOString(),
+            },
           ]);
 
         if (gameError) throw gameError;
@@ -128,35 +134,34 @@ export function useAuthProvider() {
     }
   };
 
-  const trackActivity = async (activityType: string, data?: any) => {
+  const trackActivity = async (activityType: string, data?: Record<string, unknown>) => {
     if (!user) return;
 
     try {
-      await supabase
-        .from('user_activity')
-        .insert([
-          {
-            user_id: user.id,
-            activity_type: activityType,
-            activity_data: data,
-            page_visited: window.location.pathname
-          }
-        ]);
+      await supabase.from('user_activity').insert([
+        {
+          user_id: user.id,
+          activity_type: activityType,
+          activity_data: data ?? null, // store null when no extra data
+          page_visited: window.location.pathname,
+        },
+      ]);
     } catch (error) {
       console.error('Error tracking activity:', error);
     }
   };
 
-  const signUp = async (email: string, password: string, userData?: any) => {
+  const signUp = async (
+    email: string,
+    password: string,
+    userData?: Record<string, unknown>
+  ) => {
     try {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
-        options: {
-          data: userData
-        }
+        options: { data: userData },
       });
-
       if (error) throw error;
       return { data, error: null };
     } catch (error) {
@@ -168,9 +173,8 @@ export function useAuthProvider() {
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
-        password
+        password,
       });
-
       if (error) throw error;
       return { data, error: null };
     } catch (error) {
@@ -188,7 +192,7 @@ export function useAuthProvider() {
     }
   };
 
-  const updateProfile = async (profileData: any) => {
+  const updateProfile = async (profileData: Record<string, unknown>) => {
     if (!user) return { error: 'No user logged in' };
 
     try {
@@ -199,36 +203,34 @@ export function useAuthProvider() {
         .eq('id', user.id)
         .single();
 
-      let error;
+      let error: unknown;
 
       if (existingProfile) {
-        // Update existing profile
         const result = await supabase
           .from('user_profiles')
           .update({
             ...profileData,
-            updated_at: new Date().toISOString()
+            updated_at: new Date().toISOString(),
           })
           .eq('id', user.id);
-        
+
         error = result.error;
       } else {
-        // Create new profile if it doesn't exist
-        const result = await supabase
-          .from('user_profiles')
-          .insert([{
+        const result = await supabase.from('user_profiles').insert([
+          {
             id: user.id,
             email: user.email,
             ...profileData,
             created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-          }]);
-        
+            updated_at: new Date().toISOString(),
+          },
+        ]);
+
         error = result.error;
       }
 
       if (error) throw error;
-      
+
       await trackActivity('profile_update', profileData);
       return { error: null };
     } catch (error) {
@@ -238,12 +240,9 @@ export function useAuthProvider() {
 
   const changePassword = async (newPassword: string) => {
     try {
-      const { error } = await supabase.auth.updateUser({
-        password: newPassword
-      });
-
+      const { error } = await supabase.auth.updateUser({ password: newPassword });
       if (error) throw error;
-      
+
       await trackActivity('password_change');
       return { error: null };
     } catch (error) {
@@ -260,7 +259,7 @@ export function useAuthProvider() {
     signOut,
     updateProfile,
     changePassword,
-    trackActivity
+    trackActivity,
   };
 }
 
