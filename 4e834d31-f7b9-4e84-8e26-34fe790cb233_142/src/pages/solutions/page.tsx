@@ -1,9 +1,9 @@
-
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useRef } from 'react';
 import Card from '../../components/base/Card';
 import Button from '../../components/base/Button';
+import ScrollVelocityText from '../../components/ui/ScrollVelocityText';
 
 export default function Solutions() {
   const [heroRef, heroInView] = useInView({ triggerOnce: true, threshold: 0.1 });
@@ -16,6 +16,7 @@ export default function Solutions() {
     offset: ["start end", "end start"]
   });
 
+  // We'll attach this to a subtle bg layer so it isn’t “unused”
   const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
 
   const solutions = [
@@ -108,7 +109,10 @@ export default function Solutions() {
 
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 left-20 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl animate-pulse" />
+          <motion.div
+            className="absolute top-20 left-20 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl animate-pulse"
+            style={{ y: backgroundY }}
+          />
           <div className="absolute bottom-20 right-20 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
           <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-pink-500/8 rounded-full blur-3xl animate-spin" style={{ animationDuration: '20s' }} />
           
@@ -137,59 +141,65 @@ export default function Solutions() {
           ))}
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 60 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+        {/* Hero Content */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center" ref={heroRef}>
+          {/* Accessible static H1 for SEO/screen readers */}
+          <h1 className="sr-only">Healthcare Solutions</h1>
+
+          {/* ReactBits-style scroll velocity headline */}
+          <div className="mb-6">
+            <ScrollVelocityText
+              text="Healthcare Solutions"
+              className="text-[12vw] md:text-9xl font-extrabold tracking-tight bg-clip-text text-transparent
+                         bg-gradient-to-b from-white to-white/70 leading-none"
+              baseVelocity={-14}  // negative = left
+              repeat={6}
+            />
+          </div>
+
+          {/* Optional secondary line moving opposite direction */}
+          <div className="-mt-2 opacity-80">
+            <ScrollVelocityText
+              text="Comprehensive telehealth and pharmaceutical solutions"
+              className="text-lg md:text-2xl font-medium text-white/80"
+              baseVelocity={10}   // positive = right
+              repeat={10}
+            />
+          </div>
+
+          {/* Original subheading and CTAs */}
+          <motion.p 
+            className="text-2xl md:text-3xl text-slate-200 mb-12 max-w-4xl mx-auto leading-relaxed"
+            initial={{ opacity: 0 }}
+            animate={heroInView ? { opacity: 1 } : {}}
+            transition={{ delay: 0.6, duration: 0.8 }}
           >
-            <motion.h1 
-              className="text-7xl md:text-9xl font-bold bg-gradient-to-r from-white via-teal-200 to-purple-200 bg-clip-text text-transparent mb-8"
-              animate={{ 
-                backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-              }}
-              transition={{ 
-                duration: 8,
-                repeat: Infinity,
-                ease: "linear"
-              }}
-              style={{ backgroundSize: '200% 200%' }}
+            Comprehensive telehealth and pharmaceutical solutions designed to transform patient care and practice growth
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={heroInView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ delay: 1.2, duration: 0.6 }}
+            className="flex flex-col sm:flex-row gap-6 justify-center"
+          >
+            <Button 
+              variant="primary" 
+              size="lg" 
+              onClick={() => document.getElementById('telehealth')?.scrollIntoView({ behavior: 'smooth' })}
+              className="bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600 shadow-2xl shadow-teal-500/25 border-0 text-xl px-12 py-6 transform hover:scale-105 transition-all duration-300"
             >
-              Healthcare Solutions
-            </motion.h1>
-            <motion.p 
-              className="text-2xl md:text-3xl text-slate-200 mb-12 max-w-4xl mx-auto leading-relaxed"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.8 }}
+              <i className="ri-smartphone-line mr-3"></i>
+              Explore Telehealth
+            </Button>
+            <Button 
+              variant="outline" 
+              size="lg" 
+              onClick={() => document.getElementById('pharmacy')?.scrollIntoView({ behavior: 'smooth' })}
+              className="border-2 border-white/30 text-white hover:bg-white/10 backdrop-blur-sm text-xl px-12 py-6 transform hover:scale-105 transition-all duration-300"
             >
-              Comprehensive telehealth and pharmaceutical solutions designed to transform patient care and practice growth
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 1.2, duration: 0.6 }}
-              className="flex flex-col sm:flex-row gap-6 justify-center"
-            >
-              <Button 
-                variant="primary" 
-                size="lg" 
-                onClick={() => document.getElementById('telehealth')?.scrollIntoView({ behavior: 'smooth' })}
-                className="bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600 shadow-2xl shadow-teal-500/25 border-0 text-xl px-12 py-6 transform hover:scale-105 transition-all duration-300"
-              >
-                <i className="ri-smartphone-line mr-3"></i>
-                Explore Telehealth
-              </Button>
-              <Button 
-                variant="outline" 
-                size="lg" 
-                onClick={() => document.getElementById('pharmacy')?.scrollIntoView({ behavior: 'smooth' })}
-                className="border-2 border-white/30 text-white hover:bg-white/10 backdrop-blur-sm text-xl px-12 py-6 transform hover:scale-105 transition-all duration-300"
-              >
-                <i className="ri-capsule-line mr-3"></i>
-                Pharmacy Services
-              </Button>
-            </motion.div>
+              <i className="ri-capsule-line mr-3"></i>
+              Pharmacy Services
+            </Button>
           </motion.div>
         </div>
       </section>
@@ -215,7 +225,7 @@ export default function Solutions() {
               Revolutionary Solutions
             </h2>
             <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-              Experience the future of healthcare with our cutting‑edge technology platform
+              Experience the future of healthcare with our cutting-edge technology platform
             </p>
           </motion.div>
 
@@ -320,7 +330,7 @@ export default function Solutions() {
               Why Choose Our Platform
             </h2>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-              Built on cutting‑edge technology with measurable results and proven performance
+              Built on cutting-edge technology with measurable results and proven performance
             </p>
           </motion.div>
 
@@ -356,7 +366,7 @@ export default function Solutions() {
         </div>
       </section>
 
-      {/* CTA Section with Futuristic Design */}
+      {/* CTA Section */}
       <section className="relative py-32 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl animate-pulse" />
@@ -374,7 +384,7 @@ export default function Solutions() {
               Ready for the Future?
             </h2>
             <p className="text-xl text-slate-300 mb-12 max-w-4xl mx-auto leading-relaxed">
-              Join the healthcare revolution with our next‑generation platform and transform patient care forever
+              Join the healthcare revolution with our next-generation platform and transform patient care forever
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Button 
