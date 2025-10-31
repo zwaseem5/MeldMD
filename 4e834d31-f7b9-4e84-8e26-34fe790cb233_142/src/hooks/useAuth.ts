@@ -11,12 +11,16 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signUp: (email: string, password: string, userData?: unknown) => Promise<{ data: unknown; error: unknown }>;
+  signUp: (
+    email: string,
+    password: string,
+    userData?: Record<string, unknown>
+  ) => Promise<{ data: unknown; error: unknown }>;
   signIn: (email: string, password: string) => Promise<{ data: unknown; error: unknown }>;
   signOut: () => Promise<void>;
   updateProfile: (data: Record<string, unknown>) => Promise<{ error: unknown | null }>;
   changePassword: (newPassword: string) => Promise<{ error: unknown | null }>;
-  trackActivity: (activityType: string, data?: unknown) => Promise<void>;
+  trackActivity: (activityType: string, data?: Record<string, unknown>) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -55,13 +59,9 @@ export function useAuthProvider(): AuthContextType {
         setUser(session?.user ?? null);
         setLoading(false);
 
-        // Create user profile if new user
-        if (event === 'SIGNED_UP' && session?.user) {
-          await createUserProfile(session.user);
-        }
-
-        // Track activity
+        // Create user profile whenever we have a valid user session
         if (session?.user) {
+          await createUserProfile(session.user);
           await trackActivity('auth_event', { event });
         }
       }
@@ -134,7 +134,7 @@ export function useAuthProvider(): AuthContextType {
     }
   };
 
-  const trackActivity = async (activityType: string, data?: unknown) => {
+  const trackActivity = async (activityType: string, data?: Record<string, unknown>) => {
     if (!user) return;
 
     try {
@@ -142,7 +142,7 @@ export function useAuthProvider(): AuthContextType {
         {
           user_id: user.id,
           activity_type: activityType,
-          activity_data: data,
+          activity_data: data ?? null, // store null when no extra data
           page_visited: window.location.pathname,
         },
       ]);
@@ -151,7 +151,11 @@ export function useAuthProvider(): AuthContextType {
     }
   };
 
-  const signUp = async (email: string, password: string, userData?: unknown) => {
+  const signUp = async (
+    email: string,
+    password: string,
+    userData?: Record<string, unknown>
+  ) => {
     try {
       const { data, error } = await supabase.auth.signUp({
         email,
