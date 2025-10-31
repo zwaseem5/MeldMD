@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { useUserData } from '../../../hooks/useUserData';
 import PlayerCharacter from './PlayerCharacter';
@@ -325,7 +324,7 @@ export default function GameWorld({ onModeChange }: GameWorldProps) {
     window.REACT_APP_NAVIGATE('/');
   };
 
-  const getUrgencyColor = (urgency: string) => {
+  const getUrgencyColor = (urgency: Patient['urgency'] | string) => {
     switch (urgency) {
       case 'high': return 'bg-red-500 animate-pulse';
       case 'medium': return 'bg-yellow-500';
@@ -570,7 +569,7 @@ export default function GameWorld({ onModeChange }: GameWorldProps) {
       {/* Pharmacy Interface */}
       {showPharmacy && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full mx-4 border-4 border-purple-400 max-h-[80vh] overflow-y-auto">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full mx-4 border-4 border-purple-400 max-h=[80vh] overflow-y-auto">
             <div className="p-8">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-3xl font-bold text-gray-900">💊 Pharmacy</h2>
@@ -675,7 +674,8 @@ export default function GameWorld({ onModeChange }: GameWorldProps) {
         <PatientDiagnosis
           patient={currentPatient}
           onClose={() => setShowPatientDiagnosis(false)}
-          onDiagnose={handlePatientDiagnosed}
+          // Wrap async handler so the prop remains () => void
+          onDiagnose={(p, c) => { void handlePatientDiagnosed(p, c); }}
         />
       )}
     </div>
