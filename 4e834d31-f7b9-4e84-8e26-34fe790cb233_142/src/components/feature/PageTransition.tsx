@@ -7,12 +7,10 @@ interface PageTransitionProps {
 }
 
 // Use keys `initial` / `enter` / `exit` to align with AnimatePresence semantics.
-// Cast the transition where needed to satisfy strict Framer Motion types.
 const pageVariants: Variants = {
   initial: {
     opacity: 0,
     scale: 0.95,
-    // `filter` is allowed at runtime, but its typing can be fussy; keep it here.
     filter: 'blur(10px)',
   },
   enter: {
@@ -24,10 +22,9 @@ const pageVariants: Variants = {
     opacity: 0,
     scale: 1.05,
     filter: 'blur(10px)',
-    // Use a Transition object (avoid string-based ease that may not type-check).
     transition: {
       duration: 0.3,
-      ease: [0.42, 0, 0.58, 1], // easeInOut cubic-bezier
+      ease: [0.42, 0, 0.58, 1],
     } as Transition,
   },
 };
@@ -35,11 +32,9 @@ const pageVariants: Variants = {
 const pageTransition: Transition = {
   type: 'tween',
   duration: 0.5,
-  // A safe cubic-bezier for "anticipate"-like feel
   ease: [0.34, 1.56, 0.64, 1],
 };
 
-// Particle disintegration effect
 const particleVariants: Variants = {
   initial: { opacity: 0, scale: 0 },
   animate: {
@@ -47,7 +42,7 @@ const particleVariants: Variants = {
     scale: [0, 1, 0],
     x: Math.random() * 200 - 100,
     y: Math.random() * 200 - 100,
-    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } as Transition, // easeOut-like
+    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } as Transition,
   },
 };
 
@@ -106,8 +101,5 @@ const PageTransition = ({ children }: PageTransitionProps) => {
     </AnimatePresence>
   );
 };
-
-export default PageTransition;
-
 
 export default PageTransition;
