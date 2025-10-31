@@ -19,7 +19,6 @@ function App() {
   const [hasShownInitialLoading, setHasShownInitialLoading] = useState(false);
 
   useEffect(() => {
-    // Only show loading animation on first visit
     const hasVisited = sessionStorage.getItem('hasVisitedSite');
     if (!hasVisited) {
       sessionStorage.setItem('hasVisitedSite', 'true');
@@ -29,19 +28,14 @@ function App() {
     }
   }, []);
 
-  const handleLoadingComplete = () => {
-    setShowLoading(false);
-  };
+  const handleLoadingComplete = () => setShowLoading(false);
 
   if (showLoading && hasShownInitialLoading) {
     return <LoadingAnimation onComplete={handleLoadingComplete} />;
   }
 
-  // Vite provides this automatically based on your deploy base path
-  const BASE_PATH = import.meta.env.BASE_URL || '/';
-
   return (
-    <BrowserRouter basename={BASE_PATH}>
+    <BrowserRouter basename={import.meta.env.BASE_URL ?? '/'}>
       <AuthProvider>
         <div className="min-h-screen bg-white">
           <SiteHeader />
