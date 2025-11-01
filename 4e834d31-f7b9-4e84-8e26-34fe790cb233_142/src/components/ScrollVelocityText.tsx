@@ -9,33 +9,33 @@ import {
   useScroll,
 } from "framer-motion";
 
-/** Wrap a value into [min, max) to create an infinite loop. */
+/** Wrap value into [min, max) to create an infinite loop. */
 function wrap(min: number, max: number, v: number) {
   const range = max - min;
   return ((((v - min) % range) + range) % range) + min;
 }
 
 export type ScrollVelocityTextProps = {
-  /** The text content that repeats across the marquee. */
+  /** Text that repeats across the marquee. */
   text: string;
-  /** Tailwind/utility classes for styling the strip. */
+  /** Tailwind (or any) classes for styling the strip. */
   className?: string;
   /** Base speed in percent/second. Negative = left, positive = right. */
   baseVelocity?: number;
-  /** How many copies of the text to render in the strip. */
+  /** How many copies of the text to render. */
   repeat?: number;
-  /** Gap (px) between repeated items. */
+  /** Pixel gap between copies. */
   gap?: number;
-  /** Optional separator to render between items (e.g., "•"). */
+  /** Optional separator between copies (e.g., "•"). */
   separator?: string | React.ReactNode;
-  /** Pause animation on hover. */
+  /** Pause animation while hovering. */
   pauseOnHover?: boolean;
 };
 
 const ScrollVelocityText: React.FC<ScrollVelocityTextProps> = ({
   text,
   className,
-  baseVelocity = -18,
+  baseVelocity = -16,
   repeat = 6,
   gap = 24,
   separator,
@@ -46,36 +46,35 @@ const ScrollVelocityText: React.FC<ScrollVelocityTextProps> = ({
   const rawVelocity = useVelocity(scrollY);
   const smoothVelocity = useSpring(rawVelocity, { stiffness: 400, damping: 50, mass: 0.8 });
   const velocityFactor = useTransform(smoothVelocity, (v) => {
-    // Normalize a bit so small scrolls still affect speed, but clamp extremes
-    const normalized = v / 1000; // px/ms -> ~screens/sec
+    // Normalize a bit and clamp extremes
+    const normalized = v / 1000;
     return Math.max(-5, Math.min(5, normalized));
   });
 
-  // Animated base position (in "percent of width")
+  // Animated base X position (in “percent of width” units)
   const baseX = useMotionValue(0);
 
-  // Reduced motion preference (SSR-safe check)
+  // Respect user reduced-motion preference (SSR-safe)
   const prefersReducedMotion =
     typeof window !== "undefined" &&
     "matchMedia" in window &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // Hover pause
+  // Hover to pause
   const [hovered, setHovered] = useState(false);
 
-  // Advance each frame according to base + scroll velocity
+  // Drive motion every frame
   useAnimationFrame((_, delta) => {
     if (prefersReducedMotion) return;
     if (pauseOnHover && hovered) return;
 
     const dt = delta / 1000; // ms -> s
     const vf = velocityFactor.get();
-    // Speed increases with scroll velocity; scrolling up inverts direction
     const moveBy = (baseVelocity + baseVelocity * vf) * dt;
     baseX.set(baseX.get() + moveBy);
   });
 
-  // Wrap the position so the strip loops seamlessly
+  // Wrap the X so it loops seamlessly
   const x = useTransform(baseX, (v) => `${wrap(-50, 0, v)}%`);
 
   // Build repeated items
@@ -104,4 +103,5 @@ const ScrollVelocityText: React.FC<ScrollVelocityTextProps> = ({
 };
 
 export default ScrollVelocityText;
+
 
