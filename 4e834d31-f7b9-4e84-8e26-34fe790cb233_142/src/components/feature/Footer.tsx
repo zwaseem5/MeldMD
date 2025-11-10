@@ -90,7 +90,7 @@ export default function Footer() {
                   href="mailto:hello@meldmd.com"
                   className="hover:text-white transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 rounded"
                 >
-                  hello@meldmd.com
+                  Melanie@MeldMD.com
                 </a>
               </div>
               <div className="flex items-center">
@@ -99,7 +99,7 @@ export default function Footer() {
                   href="tel:1-800-635-3363"
                   className="hover:text-white transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 rounded"
                 >
-                  1-800-MELDMD
+                  805-709-2105
                 </a>
               </div>
               <div className="flex items-center">
