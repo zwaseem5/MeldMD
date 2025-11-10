@@ -3,7 +3,7 @@ import { useInView } from 'react-intersection-observer';
 import { useRef } from 'react';
 import Card from '../../components/base/Card';
 import Button from '../../components/base/Button';
-import ScrollVelocityText from '../../components/ScrollVelocityText'; // ← your location
+import ScrollVelocityText from '../../components/ScrollVelocityText'; // ← uses src/components/ScrollVelocityText.tsx
 
 export default function Solutions() {
   const [heroRef, heroInView] = useInView({ triggerOnce: true, threshold: 0.1 });
@@ -151,14 +151,14 @@ export default function Solutions() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center" ref={heroRef}>
           <h1 className="sr-only">Healthcare Solutions</h1>
 
-          {/* ReactBits-like marquee headline */}
+          {/* ReactBits-like marquee headline (seamless) */}
           <div className="mb-6">
             <ScrollVelocityText
               text="Healthcare Solutions"
               className="text-[12vw] md:text-9xl font-extrabold tracking-tight bg-clip-text text-transparent
                          bg-gradient-to-b from-white to-white/70 leading-none"
-              baseVelocity={-14}
-              repeat={6}
+              baseVelocity={-110}
+              gap={48}
               separator="•"
             />
           </div>
@@ -167,8 +167,8 @@ export default function Solutions() {
             <ScrollVelocityText
               text="Comprehensive telehealth and pharmaceutical solutions"
               className="text-lg md:text-2xl font-medium text-white/80"
-              baseVelocity={10}
-              repeat={10}
+              baseVelocity={80}
+              gap={32}
             />
           </div>
 
@@ -418,3 +418,4 @@ export default function Solutions() {
     </div>
   );
 }
+
