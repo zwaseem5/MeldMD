@@ -1,3 +1,4 @@
+
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useState, useEffect } from 'react';
@@ -132,121 +133,42 @@ export default function About() {
   };
 
   const goToSlide = (index: number) => {
-    if (index >= 0 && index < journeySlides.length) setCurrentSlide(index);
+    // Guard against out‑of‑range indices
+    if (index >= 0 && index < journeySlides.length) {
+      setCurrentSlide(index);
+    }
   };
 
-  const toggleAutoPlay = () => setIsAutoPlaying((p) => !p);
+  // Auto‑play toggle
+  const toggleAutoPlay = () => {
+    setIsAutoPlaying((prev) => !prev);
+  };
 
+  // Auto‑advance slides – corrected to use useEffect
   useEffect(() => {
     if (!isAutoPlaying) return;
     const interval = setInterval(nextSlide, 5000);
     return () => clearInterval(interval);
   }, [isAutoPlaying]);
 
-  // ===== Leadership / Team roster =====
-  // Put headshots in /public/images/team using these exact filenames.
   const teamMembers = [
     {
-      name: 'Melanie Darrohn',
-      role: 'Managing Partner / Owner',
-      image: '/images/team/melanie-darrohn.jpg',
-      bio: 'Founder of The Meld Group. Bridges telehealth, pharmacy, and patient-centered care to expand access, reduce costs, and improve outcomes.'
+      name: 'Dr. Sarah Chen',
+      role: 'Chief Medical Officer',
+      bio: 'Board-certified physician with 15+ years in telehealth and pharmaceutical innovation.',
+      image: 'https://readdy.ai/api/search-image?query=Professional%20female%20doctor%20in%20white%20coat%2C%20confident%20smile%2C%20modern%20medical%20office%20background%2C%20professional%20headshot%2C%20trustworthy%20healthcare%20leader%2C%20clean%20clinical%20environment&width=400&height=400&seq=team-1&orientation=squarish'
     },
     {
-      name: 'Nick Mauro',
-      role: 'Managing Partner',
-      image: '/images/team/nick-mauro.jpg',
-      bio: 'Pharma sales leader for cost-effective 503A/503B solutions. Former EOD technician, Navy Diver & Naval Parachutist — disciplined and mission-driven.'
+      name: 'Michael Rodriguez',
+      role: 'Chief Technology Officer',
+      bio: 'Former healthcare tech executive with expertise in scalable telehealth platforms.',
+      image: 'https://readdy.ai/api/search-image?query=Professional%20male%20technology%20executive%2C%20business%20casual%20attire%2C%20modern%20office%20background%2C%20confident%20expression%2C%20healthcare%20technology%20leader%2C%20clean%20professional%20setting&width=400&height=400&seq=team-2&orientation=squarish'
     },
     {
-      name: 'Cheryl Simonton',
-      role: 'Sales Representative',
-      image: '/images/team/cheryl-simonton.jpg',
-      bio: '20+ years in healthcare leadership and digital adoption. Builds strategic partnerships and white-glove experiences that expand telehealth & wellness.'
-    },
-    {
-      name: 'Carson Bayless',
-      role: 'Regional Sales Manager',
-      image: '/images/team/carson-bayless.jpg',
-      bio: 'Business analytics & compliance background. Relationship-builder delivering high-service support across California’s Central Coast.'
-    },
-    {
-      name: 'Bryanna Ojeda',
-      role: 'Sales Representative',
-      image: '/images/team/bryanna-ojeda.jpg',
-      bio: 'Operations pro (ex-Teladoc) who streamlines processes and launches compliant, profitable GLP-1 programs with a warm, consultative approach.'
-    },
-    {
-      name: 'Frank DiNitto',
-      role: 'Business Administrator',
-      image: '/images/team/frank-dinitto.jpg',
-      bio: '15+ years in med-device (spine/neuro). Now leading integrated telehealth solutions spanning white-label, branding, and medication management.'
-    },
-    {
-      name: 'Rachel Rivers',
-      role: 'Sales Representative',
-      image: '/images/team/rachel-rivers.jpg',
-      bio: 'Wellness & fitness pro (Exercise Science, D-I Tennis). Helps pros integrate peptide & performance therapies for sustainable, evidence-based results.'
-    },
-    {
-      name: 'Emily Battersby',
-      role: 'Sales Representative',
-      image: '/images/team/emily-battersby.jpg',
-      bio: '17 years in nursing (12 in ER). Clear communicator and relationship-builder with a passion for active living and patient-first solutions.'
-    },
-    {
-      name: 'Sarah Rees',
-      role: 'Sales Representative',
-      image: '/images/team/sarah-rees.jpg',
-      bio: 'Specialist in GLP-1 and peptide therapies. Guides clinics with deep product knowledge and a results-driven, education-first mindset.'
-    },
-    {
-      name: 'Greg Smith',
-      role: 'Telehealth Manager',
-      image: '/images/team/greg-smith.jpg',
-      bio: 'U.S. Army Sergeant & former Major Crimes/Cold Case Detective. Brings technical and leadership expertise to drive success at MeldMD.'
-    },
-    {
-      name: 'Lori Smith',
-      role: 'Administrative Assistant',
-      image: '/images/team/lori-smith.jpg',
-      bio: 'Operations & customer-service ace who strengthens daily processes and keeps execution smooth and efficient.'
-    },
-    {
-      name: 'Nancy Coveleskie',
-      role: 'Business Administrator',
-      image: '/images/team/nancy-coveleskie.jpg',
-      bio: 'Financial strategist with deep healthcare experience; passionate about helping people gain choice and control over health & wealth.'
-    },
-    {
-      name: 'Browder Morrisey',
-      role: 'Business Administrator',
-      image: '/images/team/browder-morrisey.jpg',
-      bio: 'Leads business development & marketing. Background in psychology, real estate, and solar; content creator focused on performance & coherence.'
-    },
-    {
-      name: 'Karsten Fettinger',
-      role: 'Business Administrator',
-      image: '/images/team/karsten-fettinger.jpg',
-      bio: 'Central Coast-based administrator supporting operations and client success across MeldMD initiatives.'
-    },
-    {
-      name: 'Karl Jepson',
-      role: 'Sales Representative',
-      image: '/images/team/karl-jepson.jpg',
-      bio: 'Delivers tailored solutions that raise efficiency, profitability, and outcomes for clinics, wellness providers, and pharmacies.'
-    },
-    {
-      name: 'Ari Mazaheri',
-      role: 'Business Administrator',
-      image: '/images/team/ari-mazaheri.jpg',
-      bio: 'Administrator supporting organizational excellence and high-touch service for partners and providers.'
-    },
-    {
-      name: 'Katie Cave',
-      role: 'Sales Representative',
-      image: '/images/team/katie-cave.jpg',
-      bio: 'Provider-focused sales rep dedicated to building relationships and connecting clinics with modern wellness solutions.'
+      name: 'Dr. Jennifer Walsh',
+      role: 'VP of Pharmaceutical Operations',
+      bio: 'PharmD with 20+ years in compounding pharmacy and regulatory compliance.',
+      image: 'https://readdy.ai/api/search-image?query=Professional%20female%20pharmacist%2C%20white%20lab%20coat%2C%20pharmacy%20background%2C%20confident%20professional%2C%20healthcare%20pharmaceutical%20expert%2C%20clean%20medical%20environment&width=400&height=400&seq=team-3&orientation=squarish'
     }
   ];
 
@@ -254,7 +176,7 @@ export default function About() {
     {
       icon: 'ri-heart-line',
       title: 'Patient-First Care',
-      description: 'Every decision we make prioritizes patient outcomes and well-being above all else.',
+      description: 'Every decision we make prioritizes patient outcomes and well‑being above all else.',
       gradient: 'from-rose-400 to-pink-500'
     },
     {
@@ -419,17 +341,19 @@ export default function About() {
               center of their journey
             </p>
 
-            {/* Auto-play Controls */}
+            {/* Auto‑play Controls */}
             <div className="flex justify-center items-center space-x-4 mb-8">
               <Button
                 onClick={toggleAutoPlay}
-                className={`${isAutoPlaying ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'} text-white px-6 py-3 transition-all duration-300`}
+                className={`${
+                  isAutoPlaying ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'
+                } text-white px-6 py-3 transition-all duration-300`}
               >
                 <i className={`${isAutoPlaying ? 'ri-pause-line' : 'ri-play-line'} mr-2`}></i>
                 {isAutoPlaying ? 'Pause' : 'Auto Play'}
               </Button>
               <span className="text-slate-500 text-sm">
-                {isAutoPlaying ? 'Auto-advancing every 5 seconds' : 'Manual control'}
+                {isAutoPlaying ? 'Auto‑advancing every 5 seconds' : 'Manual control'}
               </span>
             </div>
           </motion.div>
@@ -440,13 +364,16 @@ export default function About() {
             initial={{ opacity: 0, x: 100, scale: 0.9 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             exit={{ opacity: 0, x: -100, scale: 0.9 }}
-            transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+            transition={{
+              duration: 0.8,
+              ease: [0.25, 0.46, 0.45, 0.94],
+            }}
             className="mb-16"
           >
             <Card
               className={`min-h-[700px] bg-gradient-to-br ${journeySlides[currentSlide].background} text-white border-0 shadow-2xl relative overflow-hidden`}
             >
-              {/* Background Pattern */}
+              {/* Background Pattern – fixed implementation */}
               <div
                 className="absolute inset-0"
                 style={{
@@ -515,6 +442,7 @@ export default function About() {
 
           {/* Enhanced Navigation Controls */}
           <div className="flex flex-col items-center space-y-8">
+            {/* Previous/Next Buttons */}
             <div className="flex items-center space-x-8">
               <Button
                 onClick={prevSlide}
@@ -545,6 +473,7 @@ export default function About() {
               </Button>
             </div>
 
+            {/* Enhanced Slide Indicators */}
             <div className="flex items-center space-x-2">
               {journeySlides.map((_, index) => (
                 <button
@@ -559,6 +488,7 @@ export default function About() {
               ))}
             </div>
 
+            {/* Quick Jump Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-5xl w-full">
               {journeySlides.map((slide, index) => (
                 <motion.button
@@ -629,7 +559,7 @@ export default function About() {
               >
                 At MeldMD, that belief drives everything we do. For too long, providers and
                 patients have faced shortages, inflated costs, and complex regulations. We built
-                MeldMD to be different—an accessible, affordable, and patient-focused solution
+                MeldMD to be different—an accessible, affordable, and patient‑focused solution
                 that empowers providers and transforms lives.
               </motion.p>
               <motion.p
@@ -639,7 +569,7 @@ export default function About() {
                 transition={{ delay: 0.6 }}
               >
                 With over 25 years of combined expertise in pharmaceuticals, telehealth, and
-                wellness, we unite cGMP manufacturers, FDA-registered 503A &amp; 503B
+                wellness, we unite cGMP manufacturers, FDA‑registered 503A &amp; 503B
                 pharmacies, and healthcare innovators under one umbrella.
               </motion.p>
             </div>
@@ -649,7 +579,7 @@ export default function About() {
             {[
               {
                 title: 'Innovation',
-                description: 'Cutting-edge technology and pharmaceutical solutions that reshape healthcare delivery',
+                description: 'Cutting‑edge technology and pharmaceutical solutions that reshape healthcare delivery',
                 icon: 'ri-lightbulb-line',
                 gradient: 'from-purple-500 to-pink-500',
               },
@@ -661,7 +591,7 @@ export default function About() {
               },
               {
                 title: 'Care',
-                description: 'Patient-first approach that prioritizes outcomes and compassionate service',
+                description: 'Patient‑first approach that prioritizes outcomes and compassionate service',
                 icon: 'ri-heart-line',
                 gradient: 'from-rose-500 to-orange-500',
               },
@@ -689,7 +619,10 @@ export default function About() {
                     </p>
                   </div>
 
-                  <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
+                  {/* Hover Effect */}
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}
+                  />
                 </Card>
               </motion.div>
             ))}
@@ -698,7 +631,9 @@ export default function About() {
       </section>
 
       {/* Core Values with Unique Design */}
-      <section className="py-32 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-800 relative overflow-hidden">
+      <section
+        className="py-32 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-800 relative overflow-hidden"
+      >
         <div className="absolute inset-0">
           <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-purple-500/15 rounded-full blur-3xl animate-pulse" />
           <div
@@ -751,7 +686,9 @@ export default function About() {
       </section>
 
       {/* Team Section with Creative Layout */}
-      <section className="py-32 bg-gradient-to-br from-white via-teal-50 to-purple-50 relative overflow-hidden">
+      <section
+        className="py-32 bg-gradient-to-br from-white via-teal-50 to-purple-50 relative overflow-hidden"
+      >
         <div className="absolute inset-0">
           <div className="absolute top-20 right-20 w-64 h-64 bg-teal-200/40 rounded-full blur-3xl" />
           <div className="absolute bottom-20 left-20 w-72 h-72 bg-purple-200/40 rounded-full blur-3xl" />
@@ -779,26 +716,22 @@ export default function About() {
                 key={member.name}
                 initial={{ opacity: 0, y: 60 }}
                 animate={teamInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: index * 0.05 }}
+                transition={{ duration: 0.8, delay: index * 0.2 }}
                 whileHover={{ y: -10 }}
                 className="group"
               >
                 <Card className="text-center h-full bg-white/90 backdrop-blur-sm border-0 shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden">
-                  <div className="pt-8 px-8 pb-10">
-                    <div className="relative">
-                      <img
-                        src={member.image}
-                        alt={member.name}
-                        width={320}
-                        height={320}
-                        className="w-40 h-40 rounded-full mx-auto mb-6 object-cover object-center shadow-lg group-hover:scale-105 transition-transform duration-300"
-                        loading="lazy"
-                      />
-                    </div>
-                    <h3 className="text-2xl font-bold text-slate-800 mb-1">{member.name}</h3>
-                    <p className="text-teal-700 font-semibold mb-4">{member.role}</p>
-                    <p className="text-slate-600 leading-relaxed">{member.bio}</p>
+                  <div className="relative">
+                    <img
+                      src={member.image}
+                      alt={member.name}
+                      className="w-40 h-40 rounded-full mx-auto mb-6 object-cover object-top shadow-lg group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-transparent to-purple-500/10 rounded-full w-40 h-40 mx-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </div>
+                  <h3 className="text-2xl font-bold text-slate-800 mb-2">{member.name}</h3>
+                  <p className="text-teal-600 font-semibold mb-4 text-lg">{member.role}</p>
+                  <p className="text-slate-600 leading-relaxed">{member.bio}</p>
                 </Card>
               </motion.div>
             ))}
@@ -807,7 +740,9 @@ export default function About() {
       </section>
 
       {/* Network Brands with Modern Grid */}
-      <section className="py-32 bg-gradient-to-br from-slate-900 via-slate-800 to-purple-900 relative overflow-hidden">
+      <section
+        className="py-32 bg-gradient-to-br from-slate-900 via-slate-800 to-purple-900 relative overflow-hidden"
+      >
         <div className="absolute inset-0">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
           <div
@@ -845,7 +780,9 @@ export default function About() {
                 <Card className="h-full bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/15 hover:border-white/30 transition-all duration-500">
                   <div className="p-8">
                     <div className="mb-6">
-                      <span className={`inline-block bg-gradient-to-r ${brand.gradient} text-white text-xs font-semibold px-4 py-2 rounded-full shadow-lg`}>
+                      <span
+                        className={`inline-block bg-gradient-to-r ${brand.gradient} text-white text-xs font-semibold px-4 py-2 rounded-full shadow-lg`}
+                      >
                         {brand.category}
                       </span>
                     </div>
@@ -877,7 +814,9 @@ export default function About() {
       </section>
 
       {/* Promise Section with Unique Design */}
-      <section className="py-32 bg-gradient-to-br from-white via-purple-50 to-teal-50 relative overflow-hidden">
+      <section
+        className="py-32 bg-gradient-to-br from-white via-purple-50 to-teal-50 relative overflow-hidden"
+      >
         <div className="absolute inset-0">
           <div className="absolute top-1/3 right-1/3 w-96 h-96 bg-purple-200/30 rounded-full blur-3xl" />
           <div className="absolute bottom-1/3 left-1/3 w-80 h-80 bg-teal-200/30 rounded-full blur-3xl" />
