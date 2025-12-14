@@ -62,7 +62,7 @@ serve(async (req) => {
       const endDateTime = new Date(startDateTime.getTime() + 60 * 60 * 1000) // 1 hour duration
 
       const calendarEvent = {
-        summary: `${appointment.appointment_type} - MeldMD`,
+        summary: `${appointment.appointment_type} - New Life`,
         description: `Appointment Type: ${appointment.appointment_type}\n${appointment.provider_name ? `Provider: ${appointment.provider_name}\n` : ''}${appointment.location ? `Location: ${appointment.location}\n` : ''}${appointment.notes ? `Notes: ${appointment.notes}` : ''}`,
         start: {
           dateTime: startDateTime.toISOString(),
@@ -72,7 +72,7 @@ serve(async (req) => {
           dateTime: endDateTime.toISOString(),
           timeZone: 'America/New_York'
         },
-        location: appointment.location || 'MeldMD Healthcare',
+        location: appointment.location || 'New Life Healthcare',
         reminders: {
           useDefault: false,
           overrides: [
@@ -129,7 +129,7 @@ serve(async (req) => {
         headers: {
           ...corsHeaders,
           'Content-Type': 'text/calendar',
-          'Content-Disposition': 'attachment; filename="meldmd-appointments.ics"'
+          'Content-Disposition': 'attachment; filename="newlife-appointments.ics"'
         },
         status: 200,
       })
@@ -197,9 +197,9 @@ function generateICSFile(event: any, isDataUrl = false): string {
   const icsContent = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//MeldMD//Healthcare Appointments//EN',
+    'PRODID:-//New Life//Healthcare Appointments//EN',
     'BEGIN:VEVENT',
-    `UID:${crypto.randomUUID()}@meldmd.com`,
+    `UID:${crypto.randomUUID()}@newlife.com`,
     `DTSTAMP:${now}`,
     `DTSTART:${startDate}`,
     `DTEND:${endDate}`,
@@ -228,7 +228,7 @@ function generateBulkICSFile(appointments: any[]): string {
   let icsContent = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//MeldMD//Healthcare Appointments//EN'
+    'PRODID:-//New Life//Healthcare Appointments//EN'
   ]
 
   appointments.forEach(appointment => {
@@ -242,13 +242,13 @@ function generateBulkICSFile(appointments: any[]): string {
 
     icsContent.push(
       'BEGIN:VEVENT',
-      `UID:${appointment.id}@meldmd.com`,
+      `UID:${appointment.id}@newlife.com`,
       `DTSTAMP:${now}`,
       `DTSTART:${startDate}`,
       `DTEND:${endDate}`,
-      `SUMMARY:${appointment.appointment_type} - MeldMD`,
+      `SUMMARY:${appointment.appointment_type} - New Life`,
       `DESCRIPTION:${description}`,
-      `LOCATION:${appointment.location || 'MeldMD Healthcare'}`,
+      `LOCATION:${appointment.location || 'New Life Healthcare'}`,
       'BEGIN:VALARM',
       'TRIGGER:-PT30M',
       'ACTION:DISPLAY',

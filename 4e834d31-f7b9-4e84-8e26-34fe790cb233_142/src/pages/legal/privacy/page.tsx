@@ -19,7 +19,7 @@ export default function Privacy() {
             <section className="mb-12">
               <h2 className="text-2xl font-bold text-slate-800 mb-4">Introduction</h2>
               <p className="mb-4">
-                MELDMD ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy 
+                New Life ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy 
                 explains how we collect, use, disclose, and safeguard your information when you visit our 
                 website or use our services.
               </p>
@@ -131,8 +131,8 @@ export default function Privacy() {
               </p>
               <div className="bg-slate-50 p-6 rounded-lg">
                 <p className="mb-2"><strong>Email:</strong> privacy@meldmd.com</p>
-                <p className="mb-2"><strong>Phone:</strong> 1-800-MELDMD</p>
-                <p><strong>Address:</strong> MELDMD Privacy Office, [Address to be provided]</p>
+                <p className="mb-2"><strong>Phone:</strong> 1-800-NEWLIFE</p>
+                <p><strong>Address:</strong> New Life Privacy Office, [Address to be provided]</p>
               </div>
             </section>
           </div>

@@ -19,7 +19,7 @@ export default function Terms() {
             <section className="mb-12">
               <h2 className="text-2xl font-bold text-slate-800 mb-4">Agreement to Terms</h2>
               <p className="mb-4">
-                By accessing and using MELDMD's website and services, you accept and agree to be bound 
+                By accessing and using New Life's website and services, you accept and agree to be bound 
                 by the terms and provision of this agreement. If you do not agree to abide by the above, 
                 please do not use this service.
               </p>
@@ -28,7 +28,7 @@ export default function Terms() {
             <section className="mb-12">
               <h2 className="text-2xl font-bold text-slate-800 mb-4">Description of Service</h2>
               <p className="mb-4">
-                MELDMD provides pharmaceutical and telehealth solutions including:
+                New Life provides pharmaceutical and telehealth solutions including:
               </p>
               <ul className="list-disc pl-6 mb-6 space-y-2">
                 <li>Compounded medications from FDA-registered facilities</li>
@@ -55,7 +55,7 @@ export default function Terms() {
             <section className="mb-12">
               <h2 className="text-2xl font-bold text-slate-800 mb-4">Healthcare Disclaimer</h2>
               <p className="mb-4">
-                MELDMD provides pharmaceutical products and technology services to licensed healthcare 
+                New Life provides pharmaceutical products and technology services to licensed healthcare 
                 providers. We do not provide medical advice, diagnosis, or treatment directly to patients. 
                 All medical decisions should be made by qualified healthcare professionals.
               </p>
@@ -65,7 +65,7 @@ export default function Terms() {
               <h2 className="text-2xl font-bold text-slate-800 mb-4">Intellectual Property</h2>
               <p className="mb-4">
                 The content, organization, graphics, design, compilation, magnetic translation, digital 
-                conversion, and other matters related to the MELDMD website are protected under applicable 
+                conversion, and other matters related to the New Life website are protected under applicable 
                 copyrights, trademarks, and other proprietary rights.
               </p>
             </section>
@@ -81,8 +81,8 @@ export default function Terms() {
             <section className="mb-12">
               <h2 className="text-2xl font-bold text-slate-800 mb-4">Limitation of Liability</h2>
               <p className="mb-4">
-                MELDMD shall not be liable for any direct, indirect, incidental, special, or consequential 
-                damages resulting from the use or inability to use our services, even if MELDMD has been 
+                New Life shall not be liable for any direct, indirect, incidental, special, or consequential 
+                damages resulting from the use or inability to use our services, even if New Life has been 
                 advised of the possibility of such damages.
               </p>
             </section>
@@ -138,8 +138,8 @@ export default function Terms() {
               </p>
               <div className="bg-slate-50 p-6 rounded-lg">
                 <p className="mb-2"><strong>Email:</strong> legal@meldmd.com</p>
-                <p className="mb-2"><strong>Phone:</strong> 1-800-MELDMD</p>
-                <p><strong>Address:</strong> MELDMD Legal Department, [Address to be provided]</p>
+                <p className="mb-2"><strong>Phone:</strong> 1-800-NEWLIFE</p>
+                <p><strong>Address:</strong> New Life Legal Department, [Address to be provided]</p>
               </div>
             </section>
           </div>

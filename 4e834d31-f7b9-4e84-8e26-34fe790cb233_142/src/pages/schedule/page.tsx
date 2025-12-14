@@ -72,7 +72,7 @@ export default function Schedule() {
                   width="100%"
                   height="700"
                   frameBorder="0"
-                  title="Schedule a meeting with MeldMD"
+                  title="Schedule a meeting with New Life"
                   className="w-full"
                   style={{ minHeight: '700px' }}
                 />
@@ -131,7 +131,7 @@ export default function Schedule() {
                   className="whitespace-nowrap cursor-pointer border-white text-white hover:bg-white hover:text-slate-800"
                 >
                   <i className="ri-phone-line mr-2"></i>
-                  Call 1-800-MELDMD
+                  Call 1-800-NEWLIFE
                 </Button>
                 <Button
                   variant="outline"

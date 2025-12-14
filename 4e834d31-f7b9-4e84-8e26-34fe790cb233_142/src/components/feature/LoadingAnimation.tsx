@@ -16,7 +16,7 @@ const LoadingAnimation = ({ onComplete }: LoadingAnimationProps) => {
     { text: 'Loading Medical Systems', icon: 'ri-hospital-line', color: 'from-blue-400 to-purple-400' },
     { text: 'Preparing AI Diagnostics', icon: 'ri-brain-line', color: 'from-purple-400 to-pink-400' },
     { text: 'Activating Telehealth Network', icon: 'ri-video-line', color: 'from-pink-400 to-emerald-400' },
-    { text: 'Welcome to MeldMD', icon: 'ri-check-line', color: 'from-emerald-500 to-blue-500' }
+    { text: 'Welcome to New Life', icon: 'ri-check-line', color: 'from-emerald-500 to-blue-500' }
   ];
 
   useEffect(() => {
@@ -189,10 +189,9 @@ const LoadingAnimation = ({ onComplete }: LoadingAnimationProps) => {
               }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               style={{ backgroundSize: '200% 200%' }}
-            >
-              Meld
+              >
+              New Life
             </motion.span>
-            <span className="text-white/90">MD</span>
           </motion.h1>
           <motion.div 
             className="w-20 h-px bg-gradient-to-r from-transparent via-emerald-400 to-transparent mx-auto"

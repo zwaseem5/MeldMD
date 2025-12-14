@@ -76,7 +76,7 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <div className="mb-6">
               <h2 className="text-3xl font-bold mb-4" style={{ fontFamily: '"Pacifico", serif' }}>
-                MeldMD
+                New Life
               </h2>
               <p className="text-slate-300 mb-6 max-w-md">
                 Pharma & telehealth solutions that help clinics scale care—reliably, compliantly, and affordably.
@@ -90,7 +90,7 @@ export default function Footer() {
                   href="mailto:hello@meldmd.com"
                   className="hover:text-white transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 rounded"
                 >
-                  Melanie@MeldMD.com
+                  Melanie@New Life.com
                 </a>
               </div>
               <div className="flex items-center">
@@ -181,7 +181,7 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-slate-400 text-sm">
-              © {currentYear} MeldMD. All rights reserved.
+              © {currentYear} New Life. All rights reserved.
             </p>
             <div className="flex items-center space-x-4 mt-4 md:mt-0">
               <a

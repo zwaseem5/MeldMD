@@ -68,7 +68,7 @@ const SiteHeader = () => {
               className="text-2xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent hover:from-teal-700 hover:to-blue-700 transition-all duration-300 cursor-pointer"
               style={{ fontFamily: 'Pacifico, serif' }}
             >
-              MeldMD
+              New Life
             </button>
           </div>
 

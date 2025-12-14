@@ -1,7 +1,7 @@
 
-# MeldMD Marketing Site
+# New Life Marketing Site
 
-A modern, aesthetic marketing website for MeldMD built with React, TypeScript, Tailwind CSS, and Framer Motion.
+A modern, aesthetic marketing website for New Life built with React, TypeScript, Tailwind CSS, and Framer Motion.
 
 ## 🚀 Features
 
@@ -111,7 +111,7 @@ Create a `.env.local` file in the root directory:
 ```env
 # Contact form (optional - graceful fallback if missing)
 RESEND_API_KEY=your_resend_api_key
-CONTACT_TO_EMAIL=hello@meldmd.com
+CONTACT_TO_EMAIL=hello@newlife.com
 
 # Analytics (optional - only loads when set)
 VITE_ANALYTICS_DOMAIN=your_analytics_domain
@@ -221,8 +221,8 @@ npm run build
 2. **Set Environment Variables** in Vercel dashboard:
    ```
    RESEND_API_KEY=your_actual_api_key
-   CONTACT_TO_EMAIL=hello@meldmd.com
-   VITE_ANALYTICS_DOMAIN=meldmd.com
+   CONTACT_TO_EMAIL=hello@newlife.com
+   VITE_ANALYTICS_DOMAIN=newlife.com
    ```
 
 3. **Deploy**:
@@ -323,8 +323,8 @@ Configuration in `vite.config.ts`:
 ## 📞 Support & Contact
 
 For questions or support:
-- **Email**: hello@meldmd.com
-- **Phone**: 1-800-MELDMD
+- **Email**: hello@newlife.com
+- **Phone**: 1-800-NEWLIFE
 - **Hours**: Monday - Friday, 9:00 AM - 6:00 PM EST
 
 ## 🚀 Going Live Checklist
@@ -360,8 +360,8 @@ For questions or support:
 
 ## 📄 License
 
-This project is proprietary to MeldMD. All rights reserved.
+This project is proprietary to New Life. All rights reserved.
 
 ---
 
-Built with ❤️ for MeldMD using modern web technologies and best practices.
+Built with ❤️ for New Life using modern web technologies and best practices.

@@ -132,8 +132,8 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'signin' }: A
               </h2>
               <p className="text-slate-600">
                 {mode === 'signin' 
-                  ? 'Sign in to access your MeldMD account' 
-                  : 'Join MeldMD and start your medical journey'
+                  ? 'Sign in to access your New Life account' 
+                  : 'Join New Life and start your medical journey'
                 }
               </p>
             </div>

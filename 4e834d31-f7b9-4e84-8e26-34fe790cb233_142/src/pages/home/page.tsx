@@ -120,7 +120,7 @@ export default function Home() {
           />
         </motion.div>
 
-        {/* Central MELDMD Text */}
+        {/* Central New Life Text */}
         <motion.div
           className="absolute inset-0 flex items-center justify-center z-20"
           style={{ y: textY, opacity: textOpacity, scale: textScale }}
@@ -151,9 +151,8 @@ export default function Home() {
                   repeatDelay: 3
                 }}
               >
-                MELD
+                New Life
               </motion.span>
-              <span className="text-white/90">MD</span>
             </motion.h1>
             <motion.p
               className="text-xl md:text-2xl text-white/70 mt-8 max-w-4xl mx-auto leading-relaxed px-8"
@@ -270,7 +269,7 @@ export default function Home() {
             className="text-center mb-20"
           >
             <h2 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-slate-800 via-purple-700 to-teal-700 bg-clip-text text-transparent mb-8">
-              Why Choose MeldMD?
+              Why Choose New Life?
             </h2>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
               Experience the future of healthcare with our comprehensive platform designed for both providers and patients
@@ -420,7 +419,7 @@ export default function Home() {
               Ready to Transform Healthcare?
             </h2>
             <p className="text-2xl text-slate-600 mb-16 leading-relaxed max-w-4xl mx-auto">
-              Join the future of healthcare delivery with MeldMD's comprehensive solutions
+              Join the future of healthcare delivery with New Life's comprehensive solutions
             </p>
             <div className="flex flex-col sm:flex-row gap-8 justify-center">
               <motion.div whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.98 }}>
@@ -520,7 +519,7 @@ export default function Home() {
                   width="100%"
                   height="650"
                   frameBorder="0"
-                  title="Schedule a meeting with MeldMD"
+                  title="Schedule a meeting with New Life"
                   className="rounded-xl"
                   style={{ minHeight: '650px' }}
                 />

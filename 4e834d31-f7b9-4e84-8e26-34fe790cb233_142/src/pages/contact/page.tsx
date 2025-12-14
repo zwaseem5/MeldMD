@@ -156,7 +156,7 @@ export default function Contact() {
       icon: 'ri-phone-line',
       title: 'Call Us',
       description: 'Speak with a specialist',
-      contact: '1-800-MELDMD',
+      contact: '1-800-NEWLIFE',
       href: 'tel:1-800-635-3363'
     },
     {
@@ -171,7 +171,7 @@ export default function Contact() {
   return (
     <div className="pt-16">
       <Hero
-        title="Contact MeldMD"
+        title="Contact New Life"
         subtitle="Ready to transform your practice? Get in touch with our team to learn how we can help you deliver exceptional patient care while growing your business."
         primaryCTA="Scroll to Form"
         secondaryCTA="Call Us"
@@ -410,7 +410,7 @@ export default function Contact() {
                       className="mt-1 mr-3 h-4 w-4 text-teal-600 focus:ring-teal-500 border-slate-300 rounded cursor-pointer transition-colors duration-150"
                     />
                     <span className="text-sm text-slate-600">
-                      I agree to be contacted by MeldMD regarding my inquiry and understand that I can opt out at any time. *
+                      I agree to be contacted by New Life regarding my inquiry and understand that I can opt out at any time. *
                     </span>
                   </label>
                   {contactForm.formState.errors.consent && (
@@ -505,7 +505,7 @@ export default function Contact() {
                       className="mt-1 mr-3 h-4 w-4 text-teal-600 focus:ring-teal-500 border-slate-300 rounded cursor-pointer transition-colors duration-150"
                     />
                     <span className="text-sm text-slate-600">
-                      I agree to be contacted by MeldMD to schedule a demo and understand that I can opt out at any time. *
+                      I agree to be contacted by New Life to schedule a demo and understand that I can opt out at any time. *
                     </span>
                   </label>
                   {demoForm.formState.errors.consent && (
@@ -547,7 +547,7 @@ export default function Contact() {
           <div className="space-y-6">
             {[
               {
-                question: 'How quickly can I get started with MeldMD?',
+                question: 'How quickly can I get started with New Life?',
                 answer: 'Most providers can be onboarded within 1-2 weeks, depending on your specific needs and compliance requirements.'
               },
               {
